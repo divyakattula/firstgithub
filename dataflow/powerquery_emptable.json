@@ -1,0 +1,20 @@
+{
+	"name": "powerquery_emptable",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "depdatasource",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  depdatasource",
+					"dataset": {
+						"referenceName": "depdatasource",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared depdatasource = let AdfDoc = AzureStorage.BlobContents(\"https://mystorage11234.blob.core.windows.net/deptempltable/Deparment.csv\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"depdatasource\" in Source;\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
